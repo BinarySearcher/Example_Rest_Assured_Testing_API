@@ -13,10 +13,8 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.*;
+import org.junit.runner.*;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -91,21 +89,21 @@ public class Driver {
         //result of query using rest-assured API is stored in the String field
         this.placeName =
 
-                given().
-                        //use reqSpec as specified in above build
-                        //use parameters passed into test method for this rest-assured call
-                                spec(reqSpec).pathParam("countryCode",countryCode).pathParam("zipCode",zipCode).
-                        when().
-                        //baseURI already included because of reqSpec
-                                get("/{countryCode}/{zipCode}").
-                        then().
-                        //checks for specifications laid out in above build
-                                spec(respSpec).
-                        and().
-                        //instead of evaluating correctness here, we extract and move check outside of rest-assured call
-                        //alternative: replace extract with assertThat() and path( with body(
-                                extract().
-                        path("places[0].'place name'");
+        given().
+            //use reqSpec as specified in above build
+            //use parameters passed into test method for this rest-assured call
+            spec(reqSpec).pathParam("countryCode",countryCode).pathParam("zipCode",zipCode).
+        when().
+            //baseURI already included because of reqSpec
+            get("/{countryCode}/{zipCode}").
+        then().
+            //checks for specifications laid out in above build
+            spec(respSpec).
+        and().
+            //instead of evaluating correctness here, we extract and move check outside of rest-assured call
+            //alternative: replace extract with assertThat() and path( with body(
+            extract().
+            path("places[0].'place name'");
 
         //outsourced assertion. we do this because it allows for what we're checking to be stored outside
         //of the method (in this case it is placeName and it is stored in a local field).
